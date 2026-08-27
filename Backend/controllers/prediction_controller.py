@@ -1,6 +1,6 @@
-from database.connection import db
-from models.prediction import PredictionCreate
-from utils.prediction import calculate_prediction
+from Backend.database.connection import db
+from Backend.models.prediction import PredictionCreate
+from Backend.utils.prediction import calculate_prediction
 from bson import ObjectId
 
 

@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 
-from models.user import UserCreate, UserLogin
-from controllers.user_controller import create_user, login_user
-from utils.auth import get_current_user
+from Backend.models.user import UserCreate, UserLogin
+from Backend.controllers.user_controller import create_user, login_user
+from Backend.utils.auth import get_current_user
 
 
 router = APIRouter(prefix="/users", tags=["Users"])

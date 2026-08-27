@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from utils.jwt import verify_access_token
-from database.connection import db
+from Backend.utils.jwt import verify_access_token
+from Backend.database.connection import db
 from bson import ObjectId
 
 security = HTTPBearer()

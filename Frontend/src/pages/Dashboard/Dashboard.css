@@ -1,4 +1,4 @@
-/* =====================================================
+ /* =====================================================
    PREDICTOPSAI - DASHBOARD CSS
    ===================================================== */
 
@@ -7,7 +7,7 @@
    GLOBAL
    ===================================================== */
 
-* {
+{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -3002,3 +3002,416 @@ body {
 
 
 
+
+
+/* =====================================================
+   STRONG DASHBOARD HIGHLIGHT
+   ===================================================== */
+
+.dashboard-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  padding: 18px 22px 20px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(92, 101, 245, 0.20),
+      rgba(37, 45, 52, 0.95)
+    );
+
+  border: 1px solid rgba(174, 181, 255, 0.30);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.25),
+    0 0 30px rgba(92, 101, 245, 0.18);
+}
+
+
+/* Heading glow */
+
+.dashboard-topbar h1 {
+  color: #c5c9ff;
+
+  text-shadow:
+    0 0 8px rgba(174, 181, 255, 0.45),
+    0 0 20px rgba(92, 101, 245, 0.30);
+}
+
+
+/* Subtitle */
+
+.dashboard-topbar p {
+  color: #d1d5db;
+}
+
+
+/* Bottom glowing line */
+
+.dashboard-topbar::after {
+  content: "";
+
+  position: absolute;
+  left: 5%;
+  bottom: 0;
+
+  width: 90%;
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #5c65f5,
+    #aeb5ff,
+    #5c65f5,
+    transparent
+  );
+
+  box-shadow:
+    0 0 8px #5c65f5,
+    0 0 18px rgba(92, 101, 245, 0.7);
+}
+
+/* =====================================================
+   FINAL FIX - DASHBOARD 3 & 4 HIGHLIGHT
+   ===================================================== */
+
+/* ---------- DASHBOARD 3 ---------- */
+
+.dashboard3-page .prediction3-card,
+.dashboard3-page .prediction3-small-card,
+.dashboard3-page .prediction3-panel {
+  position: relative;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(92, 101, 245, 0.12),
+      #252d34 45%,
+      #20272c 100%
+    );
+
+  border: 1px solid rgba(174, 181, 255, 0.28);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25),
+    0 0 18px rgba(92, 101, 245, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Dashboard 3 glow */
+
+.dashboard3-page .prediction3-card::before,
+.dashboard3-page .prediction3-small-card::before,
+.dashboard3-page .prediction3-panel::before {
+  content: "";
+
+  position: absolute;
+
+  top: -90px;
+  right: -70px;
+
+  width: 220px;
+  height: 220px;
+
+  background: radial-gradient(
+    circle,
+    rgba(92, 101, 245, 0.30) 0%,
+    rgba(92, 101, 245, 0.12) 35%,
+    transparent 70%
+  );
+
+  pointer-events: none;
+}
+
+/* Dashboard 3 top shine */
+
+.dashboard3-page .prediction3-card::after,
+.dashboard3-page .prediction3-small-card::after,
+.dashboard3-page .prediction3-panel::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 8%;
+
+  width: 84%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(174, 181, 255, 0.65),
+    transparent
+  );
+
+  pointer-events: none;
+}
+
+/* Dashboard 3 hover */
+
+.dashboard3-page .prediction3-card:hover,
+.dashboard3-page .prediction3-small-card:hover,
+.dashboard3-page .prediction3-panel:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(174, 181, 255, 0.55);
+
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.30),
+    0 0 28px rgba(92, 101, 245, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+
+/* ---------- DASHBOARD 4 ---------- */
+
+.dashboard4-page .report4-stat,
+.dashboard4-page .reports4-panel,
+.dashboard4-page .reports4-insight {
+  position: relative;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(92, 101, 245, 0.12),
+      #252d34 45%,
+      #20272c 100%
+    );
+
+  border: 1px solid rgba(174, 181, 255, 0.28);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25),
+    0 0 18px rgba(92, 101, 245, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Dashboard 4 glow */
+
+.dashboard4-page .report4-stat::before,
+.dashboard4-page .reports4-panel::before,
+.dashboard4-page .reports4-insight::before {
+  content: "";
+
+  position: absolute;
+
+  top: -90px;
+  right: -70px;
+
+  width: 220px;
+  height: 220px;
+
+  background: radial-gradient(
+    circle,
+    rgba(92, 101, 245, 0.30) 0%,
+    rgba(92, 101, 245, 0.12) 35%,
+    transparent 70%
+  );
+
+  pointer-events: none;
+}
+
+/* Dashboard 4 top shine */
+
+.dashboard4-page .report4-stat::after,
+.dashboard4-page .reports4-panel::after,
+.dashboard4-page .reports4-insight::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 8%;
+
+  width: 84%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(174, 181, 255, 0.65),
+    transparent
+  );
+
+  pointer-events: none;
+}
+
+/* Dashboard 4 hover */
+
+.dashboard4-page .report4-stat:hover,
+.dashboard4-page .reports4-panel:hover,
+.dashboard4-page .reports4-insight:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(174, 181, 255, 0.55);
+
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.30),
+    0 0 28px rgba(92, 101, 245, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+
+/* =====================================================
+   DASHBOARD 3 - TOPBAR HIGHLIGHT
+   ===================================================== */
+
+.dashboard3-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  padding: 18px 22px 20px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(92, 101, 245, 0.20),
+      rgba(37, 45, 52, 0.95)
+    );
+
+  border: 1px solid rgba(174, 181, 255, 0.30);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.25),
+    0 0 30px rgba(92, 101, 245, 0.18);
+}
+
+
+/* Heading */
+
+.dashboard3-topbar h1 {
+  color: #c5c9ff;
+
+  text-shadow:
+    0 0 8px rgba(174, 181, 255, 0.45),
+    0 0 20px rgba(92, 101, 245, 0.30);
+}
+
+
+/* Subtitle */
+
+.dashboard3-topbar p {
+  color: #d1d5db;
+}
+
+
+/* Glowing bottom line */
+
+.dashboard3-topbar::after {
+  content: "";
+
+  position: absolute;
+
+  left: 5%;
+  bottom: 0;
+
+  width: 90%;
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #5c65f5,
+    #aeb5ff,
+    #5c65f5,
+    transparent
+  );
+
+  box-shadow:
+    0 0 8px #5c65f5,
+    0 0 18px rgba(92, 101, 245, 0.7);
+}
+
+/* =====================================================
+   DASHBOARD 4 - TOPBAR HIGHLIGHT
+   ===================================================== */
+
+.dashboard4-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  padding: 18px 22px 20px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(92, 101, 245, 0.20),
+      rgba(37, 45, 52, 0.95)
+    );
+
+  border: 1px solid rgba(174, 181, 255, 0.30);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.25),
+    0 0 30px rgba(92, 101, 245, 0.18);
+}
+
+
+/* Heading */
+
+.dashboard4-topbar h1 {
+  color: #c5c9ff;
+
+  text-shadow:
+    0 0 8px rgba(174, 181, 255, 0.45),
+    0 0 20px rgba(92, 101, 245, 0.30);
+}
+
+
+/* Subtitle */
+
+.dashboard4-topbar p {
+  color: #d1d5db;
+}
+
+
+/* Glowing bottom line */
+
+.dashboard4-topbar::after {
+  content: "";
+
+  position: absolute;
+
+  left: 5%;
+  bottom: 0;
+
+  width: 90%;
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #5c65f5,
+    #aeb5ff,
+    #5c65f5,
+    transparent
+  );
+
+  box-shadow:
+    0 0 8px #5c65f5,
+    0 0 18px rgba(92, 101, 245, 0.7); */
+} */

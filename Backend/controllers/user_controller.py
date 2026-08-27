@@ -1,7 +1,7 @@
-from database.connection import db
-from models.user import UserCreate, UserLogin
-from utils.password import hash_password, verify_password
-from utils.jwt import create_access_token
+from Backend.database.connection import db
+from Backend.models.user import UserCreate, UserLogin
+from Backend.utils.password import hash_password, verify_password
+from Backend.utils.jwt import create_access_token
 
 
 def create_user(user: UserCreate):
