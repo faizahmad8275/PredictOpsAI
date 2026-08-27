@@ -11,3 +11,11 @@ client = MongoClient(MONGO_URL)
 db = client["predictops"]
 
 print("MongoDB connected:", client.admin.command("ping"))
+
+print("DATABASE:", db.name)
+print("COLLECTIONS:", db.list_collection_names())
+
+users_collection = db["users"]
+
+print("USER COUNT:", users_collection.count_documents({}))
+print("USERS:", list(users_collection.find({}, {"password": 0})))

@@ -2,6 +2,26 @@ import { Link } from "react-router-dom";
 import "./Dashboard.css";
 
 function Dashboard1() {
+
+  // Get logged-in user from localStorage
+  let user = null;
+
+  try {
+    user = JSON.parse(localStorage.getItem("user"));
+  } catch (error) {
+    console.error("Invalid user data in localStorage");
+    localStorage.removeItem("user");
+  }
+
+  // Logout function
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+
+    window.location.href = "/login";
+  };
+
+
   return (
     <div className="dashboard-page">
 
@@ -27,23 +47,35 @@ function Dashboard1() {
         {/* Navigation */}
         <nav className="dashboard-nav">
 
-          <Link to="/dashboard1" className="nav-item active">
+          <Link
+            to="/dashboard1"
+            className="nav-item active"
+          >
             <span>▣</span>
             Dashboard
           </Link>
 
-          <Link to="/dashboard2" className="nav-item">
+          <Link
+            to="/dashboard2"
+            className="nav-item"
+          >
             <span>◈</span>
             Analytics
           </Link>
 
-          <Link to="/dashboard3" className="nav-item">
+          <Link
+            to="/dashboard3"
+            className="nav-item"
+          >
             <span>◆</span>
             Predictions
           </Link>
 
-          <Link to="/dashboard4" className="nav-item">
-            <span>▤</span>
+          <Link
+            to="/dashboard4"
+            className="nav-item"
+          >
+            <span>¤</span>
             Reports
           </Link>
 
@@ -53,10 +85,13 @@ function Dashboard1() {
         {/* Logout */}
         <div className="sidebar-bottom">
 
-          <Link to="/login" className="logout-link">
+          <button
+            onClick={handleLogout}
+            className="logout-link"
+          >
             <span>↪</span>
             Logout
-          </Link>
+          </button>
 
         </div>
 
@@ -73,11 +108,15 @@ function Dashboard1() {
         <header className="dashboard-topbar">
 
           <div>
-            <h1>Dashboard</h1>
+
+            <h1>
+              Dashboard
+            </h1>
 
             <p>
               Welcome back! Here's what's happening today.
             </p>
+
           </div>
 
 
@@ -88,18 +127,31 @@ function Dashboard1() {
             </button>
 
 
+            {/* ================= USER PROFILE ================= */}
+
             <div className="profile">
 
+              {/* User Avatar */}
+
               <div className="profile-avatar">
-                HK
+
+                {user?.name
+                  ? user.name.charAt(0).toUpperCase()
+                  : "U"}
+
               </div>
+
+
+              {/* User Information */}
 
               <div className="profile-info">
 
-                <strong>Harshit Kumar</strong>
+                <strong>
+                  {user?.name || "User"}
+                </strong>
 
                 <span>
-                  Administrator
+                  {user?.email || ""}
                 </span>
 
               </div>
@@ -202,7 +254,7 @@ function Dashboard1() {
           <div className="stat-card">
 
             <div className="stat-icon">
-              ⏱
+              ±
             </div>
 
             <div className="stat-content">
@@ -287,17 +339,11 @@ function Dashboard1() {
               <div className="chart">
 
                 <div className="chart-bar bar-1"></div>
-
                 <div className="chart-bar bar-2"></div>
-
                 <div className="chart-bar bar-3"></div>
-
                 <div className="chart-bar bar-4"></div>
-
                 <div className="chart-bar bar-5"></div>
-
                 <div className="chart-bar bar-6"></div>
-
                 <div className="chart-bar bar-7"></div>
 
               </div>
