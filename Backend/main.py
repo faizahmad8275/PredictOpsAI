@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from Backend.routes.health import router as health_router
-from Backend.routes.user import router as user_router
-from Backend.routes.incident import router as incident_router
-from Backend.routes.prediction import router as prediction_router
+from routes.health import router as health_router
+from routes.user import router as user_router
+from routes.incident import router as incident_router
+from routes.prediction import router as prediction_router
+from routes import report
 
 app = FastAPI(title="PredictOps AI Backend")
 
@@ -23,6 +24,7 @@ app.include_router(health_router)
 app.include_router(user_router)
 app.include_router(incident_router)
 app.include_router(prediction_router)
+app.include_router(report.router)
 
 
 @app.get("/")

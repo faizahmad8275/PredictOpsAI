@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
-from Backend.models.incident import IncidentCreate, IncidentUpdate
-from Backend.utils.auth import get_current_user
+from models.incident import IncidentCreate, IncidentUpdate
+from utils.auth import get_current_user
 
-from Backend.controllers.incident_controller import (
+from controllers.incident_controller import (
     create_incident,
     get_incidents,
     get_incident_by_id,

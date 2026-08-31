@@ -1,7 +1,6 @@
- /* =====================================================
+/* =====================================================
    PREDICTOPSAI - DASHBOARD CSS
    ===================================================== */
-
 
 /* =====================================================
    GLOBAL
@@ -37,7 +36,6 @@ body {
   scrollbar-width: thin;
 }
 
-
 /* =====================================================
    DASHBOARD 1 PAGE
    ===================================================== */
@@ -54,7 +52,6 @@ body {
   overflow-y: auto;
 }
 
-
 /* =====================================================
    DASHBOARD CARD
    ===================================================== */
@@ -69,7 +66,6 @@ body {
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
   color: white;
 }
-
 
 /* =====================================================
    TITLE
@@ -89,7 +85,6 @@ body {
   text-align: center;
   margin-bottom: 40px;
 }
-
 
 /* =====================================================
    BUTTONS
@@ -125,7 +120,6 @@ body {
   transform: translateY(-2px);
 }
 
-
 /* =====================================================
    SIDEBAR
    ===================================================== */
@@ -151,7 +145,6 @@ body {
 
   overflow: hidden;
 }
-
 
 /* =====================================================
    LOGO
@@ -195,7 +188,6 @@ body {
   color: #858d95;
   font-size: 11px;
 }
-
 
 /* =====================================================
    NAVIGATION
@@ -242,7 +234,6 @@ body {
   box-shadow: 0 8px 20px rgba(92, 101, 245, 0.2);
 }
 
-
 /* =====================================================
    SIDEBAR BOTTOM
    ===================================================== */
@@ -278,7 +269,6 @@ body {
   color: #ffffff;
 }
 
-
 /* =====================================================
    MAIN CONTENT
    ===================================================== */
@@ -291,7 +281,6 @@ body {
 
   overflow: visible;
 }
-
 
 /* =====================================================
    TOP BAR
@@ -319,7 +308,6 @@ body {
   color: #c0c5c9;
   font-size: 14px;
 }
-
 
 /* =====================================================
    TOPBAR RIGHT
@@ -351,7 +339,6 @@ body {
   background: #313b43;
   border-color: #7d85ff;
 }
-
 
 /* =====================================================
    PROFILE
@@ -392,7 +379,6 @@ body {
   color: #858d95;
   font-size: 11px;
 }
-
 
 /* =====================================================
    STAT CARDS
@@ -471,7 +457,6 @@ body {
   color: #75d89b;
 }
 
-
 /* =====================================================
    DASHBOARD GRID
    ===================================================== */
@@ -483,7 +468,6 @@ body {
   gap: 20px;
   margin-bottom: 20px;
 }
-
 
 /* =====================================================
    PANELS
@@ -499,7 +483,6 @@ body {
 
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
 }
-
 
 /* =====================================================
    PANEL HEADER
@@ -539,7 +522,6 @@ body {
   outline: none;
   font-size: 11px;
 }
-
 
 /* =====================================================
    CHART
@@ -649,7 +631,6 @@ body {
   font-size: 10px;
 }
 
-
 /* =====================================================
    AI PREDICTION
    ===================================================== */
@@ -718,7 +699,6 @@ body {
   margin-top: 7px;
 }
 
-
 /* =====================================================
    BOTTOM GRID
    ===================================================== */
@@ -726,7 +706,6 @@ body {
 .bottom-grid {
   grid-template-columns: 2fr 1fr;
 }
-
 
 /* =====================================================
    ACTIVITY
@@ -810,7 +789,6 @@ body {
   font-size: 9px;
 }
 
-
 /* =====================================================
    SYSTEM STATUS
    ===================================================== */
@@ -848,7 +826,6 @@ body {
 .online {
   color: #75d89b;
 }
-
 
 /* =====================================================
    NEXT DASHBOARD
@@ -889,7 +866,6 @@ body {
 
   box-shadow: 0 8px 20px rgba(92, 101, 245, 0.25);
 }
-
 
 /* =====================================================
    DASHBOARD 2 - ANALYTICS
@@ -949,7 +925,6 @@ body {
   font-weight: 600;
 }
 
-
 /* =====================================================
    MODEL PERFORMANCE
    ===================================================== */
@@ -992,7 +967,6 @@ body {
   margin-top: 4px;
 }
 
-
 /* =====================================================
    PERFORMANCE INFO
    ===================================================== */
@@ -1026,7 +1000,6 @@ body {
   color: #ffffff;
   font-size: 12px;
 }
-
 
 /* =====================================================
    CATEGORY LIST
@@ -1070,7 +1043,6 @@ body {
   font-size: 14px;
 }
 
-
 /* =====================================================
    DASHBOARD 3 - AI PREDICTIONS
    ===================================================== */
@@ -1091,7 +1063,6 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 }
-
 
 /* =====================================================
    DASHBOARD 3 SIDEBAR
@@ -1120,7 +1091,6 @@ body {
 
   overflow: hidden;
 }
-
 
 /* =====================================================
    DASHBOARD 3 LOGO
@@ -1168,7 +1138,6 @@ body {
   color: #858d95;
   font-size: 11px;
 }
-
 
 /* =====================================================
    DASHBOARD 3 NAVIGATION
@@ -1222,7 +1191,6 @@ body {
   box-shadow: 0 8px 20px rgba(92, 101, 245, 0.2);
 }
 
-
 /* =====================================================
    DASHBOARD 3 LOGOUT
    ===================================================== */
@@ -1262,7 +1230,6 @@ body {
   color: white;
 }
 
-
 /* =====================================================
    DASHBOARD 3 MAIN
    ===================================================== */
@@ -1275,7 +1242,6 @@ body {
 
   overflow: visible;
 }
-
 
 /* =====================================================
    DASHBOARD 3 TOPBAR
@@ -1354,7 +1320,6 @@ body {
   font-size: 11px;
 }
 
-
 /* =====================================================
    PREDICTION OVERVIEW
    ===================================================== */
@@ -1405,7 +1370,6 @@ body {
   color: #75d89b;
   font-size: 12px;
 }
-
 
 /* =====================================================
    SCORE
@@ -1466,7 +1430,6 @@ body {
   margin-top: 7px;
 }
 
-
 /* =====================================================
    MODEL STATISTICS
    ===================================================== */
@@ -1495,7 +1458,6 @@ body {
   color: #ffffff;
   font-size: 14px;
 }
-
 
 /* =====================================================
    SMALL CARDS
@@ -1579,7 +1541,6 @@ body {
   color: #75d89b !important;
 }
 
-
 /* =====================================================
    CHART PANEL
    ===================================================== */
@@ -1634,7 +1595,6 @@ body {
 
   font-size: 11px;
 }
-
 
 /* =====================================================
    PREDICTION CHART
@@ -1752,7 +1712,6 @@ body {
   font-size: 10px;
 }
 
-
 /* =====================================================
    DASHBOARD 3 NAVIGATION
    ===================================================== */
@@ -1797,7 +1756,6 @@ body {
   box-shadow: 0 8px 20px rgba(92, 101, 245, 0.25);
 }
 
-
 /* =====================================================
    DASHBOARD 4 - REPORTS
    ===================================================== */
@@ -1819,7 +1777,6 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
 }
-
 
 /* =====================================================
    DASHBOARD 4 SIDEBAR
@@ -1848,7 +1805,6 @@ body {
 
   overflow: hidden;
 }
-
 
 /* =====================================================
    DASHBOARD 4 LOGO
@@ -1897,7 +1853,6 @@ body {
 
   font-size: 11px;
 }
-
 
 /* =====================================================
    DASHBOARD 4 NAVIGATION
@@ -1955,7 +1910,6 @@ body {
   box-shadow: 0 8px 20px rgba(92, 101, 245, 0.2);
 }
 
-
 /* =====================================================
    DASHBOARD 4 LOGOUT
    ===================================================== */
@@ -1998,7 +1952,6 @@ body {
   color: #ffffff;
 }
 
-
 /* =====================================================
    DASHBOARD 4 MAIN
    ===================================================== */
@@ -2012,7 +1965,6 @@ body {
 
   overflow: visible;
 }
-
 
 /* =====================================================
    DASHBOARD 4 TOPBAR
@@ -2102,7 +2054,6 @@ body {
   font-size: 11px;
 }
 
-
 /* =====================================================
    SUMMARY
    ===================================================== */
@@ -2189,7 +2140,6 @@ body {
   color: #75d89b !important;
 }
 
-
 /* =====================================================
    REPORT PANEL
    ===================================================== */
@@ -2259,7 +2209,6 @@ body {
 
   transform: translateY(-2px);
 }
-
 
 /* =====================================================
    TABLE
@@ -2389,7 +2338,6 @@ body {
   cursor: default;
 }
 
-
 /* =====================================================
    INSIGHTS
    ===================================================== */
@@ -2454,7 +2402,6 @@ body {
   line-height: 1.5;
 }
 
-
 /* =====================================================
    DASHBOARD 4 NAVIGATION
    ===================================================== */
@@ -2505,7 +2452,6 @@ body {
   background: #4148aa;
 }
 
-
 /* =====================================================
    TABLET
    ===================================================== */
@@ -2548,7 +2494,6 @@ body {
     grid-template-columns: 1fr;
   }
 }
-
 
 /* =====================================================
    MOBILE
@@ -2647,7 +2592,6 @@ body {
     width: 100%;
   }
 
-
   /* -------------------------
      DASHBOARD 2
      ------------------------- */
@@ -2668,7 +2612,6 @@ body {
     width: 110px;
     height: 110px;
   }
-
 
   /* -------------------------
      DASHBOARD 3
@@ -2766,7 +2709,6 @@ body {
   .prediction3-bar {
     width: 25px;
   }
-
 
   /* -------------------------
      DASHBOARD 4
@@ -2874,7 +2816,6 @@ body {
   }
 }
 
-
 /* =====================================================
    EXTRA SMALL MOBILE
    ===================================================== */
@@ -2967,12 +2908,6 @@ body {
   }
 }
 
-
-
-
-
-
-
 /* =========================================
    BETTER CENTERED CONTENT LAYOUT
 ========================================= */
@@ -2996,13 +2931,6 @@ body {
   }
 
 }
-
-
-
-
-
-
-
 
 /* =====================================================
    STRONG DASHBOARD HIGHLIGHT
@@ -3031,7 +2959,6 @@ body {
     0 0 30px rgba(92, 101, 245, 0.18);
 }
 
-
 /* Heading glow */
 
 .dashboard-topbar h1 {
@@ -3042,13 +2969,11 @@ body {
     0 0 20px rgba(92, 101, 245, 0.30);
 }
 
-
 /* Subtitle */
 
 .dashboard-topbar p {
   color: #d1d5db;
 }
-
 
 /* Bottom glowing line */
 
@@ -3174,7 +3099,6 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-
 /* ---------- DASHBOARD 4 ---------- */
 
 .dashboard4-page .report4-stat,
@@ -3269,7 +3193,6 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-
 /* =====================================================
    DASHBOARD 3 - TOPBAR HIGHLIGHT
    ===================================================== */
@@ -3297,7 +3220,6 @@ body {
     0 0 30px rgba(92, 101, 245, 0.18);
 }
 
-
 /* Heading */
 
 .dashboard3-topbar h1 {
@@ -3308,13 +3230,11 @@ body {
     0 0 20px rgba(92, 101, 245, 0.30);
 }
 
-
 /* Subtitle */
 
 .dashboard3-topbar p {
   color: #d1d5db;
 }
-
 
 /* Glowing bottom line */
 
@@ -3370,7 +3290,6 @@ body {
     0 0 30px rgba(92, 101, 245, 0.18);
 }
 
-
 /* Heading */
 
 .dashboard4-topbar h1 {
@@ -3381,13 +3300,11 @@ body {
     0 0 20px rgba(92, 101, 245, 0.30);
 }
 
-
 /* Subtitle */
 
 .dashboard4-topbar p {
   color: #d1d5db;
 }
-
 
 /* Glowing bottom line */
 
@@ -3413,5 +3330,234 @@ body {
 
   box-shadow:
     0 0 8px #5c65f5,
-    0 0 18px rgba(92, 101, 245, 0.7); */
-} */
+    0 0 18px rgba(92, 101, 245, 0.7);
+}
+
+/* ========================================
+   PREDICTION OVERVIEW - FULL WIDTH BAR
+======================================== */
+
+.prediction3-filter {
+  width: 100%;
+  height: 86px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 26px;
+  margin: 22px 0;
+
+  background: #29323a;
+
+  border-radius: 20px;
+
+  box-sizing: border-box;
+}
+
+/* Left side */
+
+.prediction3-filter h2 {
+  margin: 0 0 6px 0;
+
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.2;
+
+  color: #f1f1f1;
+}
+
+.prediction3-filter p {
+  margin: 0;
+
+  font-size: 14px;
+  color: #9da6b0;
+}
+
+/* Right side dropdown */
+
+.prediction3-filter select {
+  width: 145px;
+  height: 42px;
+
+  padding: 0 16px;
+
+  background: #333e48;
+  color: #e5e7eb;
+
+  border: 1px solid #4a5661;
+  border-radius: 12px;
+
+  font-size: 15px;
+  cursor: pointer;
+  outline: none;
+}
+
+.prediction3-filter select:focus {
+  border-color: #6674f5;
+}
+
+/* =========================================
+   DASHBOARD 3 - CLEAN CONTENT LIKE DASHBOARD 2
+========================================= */
+
+/* Main prediction cards */
+.prediction3-card,
+.prediction3-score,
+.prediction3-performance,
+.prediction3-stat-card,
+.prediction3-analysis-card {
+  background: #2b343d !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove purple glow from cards */
+.prediction3-card::before,
+.prediction3-card::after,
+.prediction3-score::before,
+.prediction3-performance::before,
+.prediction3-stat-card::before,
+.prediction3-analysis-card::before {
+  background: none !important;
+  display: none !important;
+}
+
+/* Main headings */
+.prediction3-card h1,
+.prediction3-card h2,
+.prediction3-card h3,
+.prediction3-score h2,
+.prediction3-performance h2,
+.prediction3-analysis-card h2 {
+  color: #e5e7eb !important;
+}
+
+/* Normal subtitles */
+.prediction3-card p,
+.prediction3-score p,
+.prediction3-performance p,
+.prediction3-analysis-card p {
+  color: #9ca3af !important;
+}
+
+/* Main numbers */
+.prediction3-card strong,
+.prediction3-card .value,
+.prediction3-stat-card .value,
+.prediction3-score .score,
+.prediction3-performance strong {
+  color: #e5e7eb !important;
+}
+
+/* Lines inside Model Performance */
+.prediction3-performance .performance-row {
+  border-bottom: 1px solid #3b4650 !important;
+}
+
+/* Icon boxes clean like Dashboard2 */
+.prediction3-stat-card .icon,
+.prediction3-card .icon {
+  background: #303c57 !important;
+  box-shadow: none !important;
+}
+
+/* Green status text */
+.prediction3-card .success,
+.prediction3-stat-card .success,
+.prediction3-score .risk-text {
+  color: #8fc9ad !important;
+}
+
+/* =====================================================
+   FINAL THEME SYNC — DASHBOARD 2 COLORS ON DASHBOARD 3 & 4
+   Layout, spacing and sizing are intentionally unchanged.
+   ===================================================== */
+
+/* Same primary content/card color used by Dashboard 2 */
+.dashboard3-page .prediction3-card,
+.dashboard3-page .prediction3-small-card,
+.dashboard3-page .prediction3-panel,
+.dashboard4-page .report4-stat,
+.dashboard4-page .reports4-panel,
+.dashboard4-page .reports4-insight,
+.prediction3-filter,
+.prediction3-analysis {
+  background: #252d34 !important;
+  background-image: none !important;
+}
+
+/* Same darker inner surface where applicable */
+.dashboard3-page .prediction3-panel,
+.dashboard4-page .reports4-panel,
+.prediction3-analysis {
+  background: #20272c !important;
+}
+
+/* Remove only the extra purple decorative overlays introduced later */
+.dashboard3-page .prediction3-card::before,
+.dashboard3-page .prediction3-card::after,
+.dashboard3-page .prediction3-small-card::before,
+.dashboard3-page .prediction3-small-card::after,
+.dashboard3-page .prediction3-panel::before,
+.dashboard3-page .prediction3-panel::after,
+.dashboard4-page .report4-stat::before,
+.dashboard4-page .report4-stat::after,
+.dashboard4-page .reports4-panel::before,
+.dashboard4-page .reports4-panel::after,
+.dashboard4-page .reports4-insight::before,
+.dashboard4-page .reports4-insight::after,
+.prediction3-analysis::before,
+.prediction3-analysis::after {
+  display: none !important;
+}
+
+/* Dashboard 2 style borders */
+.dashboard3-page .prediction3-card,
+.dashboard3-page .prediction3-small-card,
+.dashboard3-page .prediction3-panel,
+.dashboard4-page .report4-stat,
+.dashboard4-page .reports4-panel,
+.dashboard4-page .reports4-insight,
+.prediction3-filter,
+.prediction3-analysis {
+  border-color: #3b4650 !important;
+  box-shadow: none !important;
+}
+
+/* Keep Dashboard 2's clean dropdown surface */
+.prediction3-filter select,
+.prediction3-analysis select {
+  background: #303a43 !important;
+  border-color: #4b5563 !important;
+}
+
+
+
+/* ================= REPORT ACTIONS ================= */
+
+.report4-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+/* ================= DELETE BUTTON ================= */
+
+.delete4-button {
+  padding: 8px 14px;
+  border: 1px solid #dc2626;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete4-button:hover {
+  background: #dc2626;
+  color: #ffffff;
+}

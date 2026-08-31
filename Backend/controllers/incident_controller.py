@@ -1,5 +1,5 @@
-from Backend.database.connection import db
-from Backend.models.incident import IncidentCreate, IncidentUpdate
+from database.connection import db
+from models.incident import IncidentCreate, IncidentUpdate
 from bson import ObjectId
 
 

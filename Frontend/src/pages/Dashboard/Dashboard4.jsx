@@ -1,68 +1,565 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./Dashboard.css";
 
 function Dashboard4() {
+
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [generating, setGenerating] = useState(false);
+
+  // ================= FETCH REPORTS =================
+
+  const fetchReports = async () => {
+
+    try {
+
+      setLoading(true);
+      setError("");
+
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+        window.location.href = "/login";
+        return;
+      }
+
+      const response = await fetch(
+        "http://127.0.0.1:8000/reports/",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+
+        if (response.status === 401) {
+
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("user");
+
+          window.location.href = "/login";
+          return;
+        }
+
+        throw new Error("Failed to fetch reports");
+      }
+
+      const data = await response.json();
+
+      setReports(
+        Array.isArray(data)
+          ? data
+          : []
+      );
+
+    } catch (err) {
+
+      console.error("Report fetch error:", err);
+
+      setError(
+        "Unable to load reports."
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
+
+
+  // ================= INITIAL LOAD =================
+
+  useEffect(() => {
+
+    fetchReports();
+
+  }, []);
+
+
+  // ================= LOGOUT =================
+
+  const handleLogout = () => {
+
+    localStorage.removeItem(
+      "access_token"
+    );
+
+    localStorage.removeItem(
+      "user"
+    );
+
+    window.location.href = "/login";
+
+  };
+
+
+  // ================= GENERATE REPORT =================
+
+  const handleGenerateReport = async () => {
+
+    try {
+
+      setGenerating(true);
+      setError("");
+
+      const token =
+        localStorage.getItem(
+          "access_token"
+        );
+
+      if (!token) {
+
+        window.location.href = "/login";
+        return;
+
+      }
+
+      const response = await fetch(
+        "http://127.0.0.1:8000/reports/",
+        {
+          method: "POST",
+
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            report_name:
+              "Monthly Performance",
+
+            report_type:
+              "Analytics",
+
+            description:
+              "AI Analytics Report",
+          }),
+        }
+      );
+
+      if (!response.ok) {
+
+        if (response.status === 401) {
+
+          localStorage.removeItem(
+            "access_token"
+          );
+
+          localStorage.removeItem(
+            "user"
+          );
+
+          window.location.href =
+            "/login";
+
+          return;
+        }
+
+        throw new Error(
+          "Failed to generate report"
+        );
+      }
+
+      // Refresh reports
+      await fetchReports();
+
+    } catch (err) {
+
+      console.error(
+        "Generate report error:",
+        err
+      );
+
+      setError(
+        "Unable to generate report."
+      );
+
+    } finally {
+
+      setGenerating(false);
+
+    }
+  };
+
+
+  // ================= DOWNLOAD REPORT =================
+
+  const handleDownload = async (
+    reportId,
+    reportName
+  ) => {
+
+    try {
+
+      const token =
+        localStorage.getItem(
+          "access_token"
+        );
+
+      if (!token) {
+
+        window.location.href = "/login";
+        return;
+
+      }
+
+      const response = await fetch(
+        `http://127.0.0.1:8000/reports/${reportId}/download`,
+        {
+          method: "POST",
+
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+
+        if (response.status === 401) {
+
+          localStorage.removeItem(
+            "access_token"
+          );
+
+          localStorage.removeItem(
+            "user"
+          );
+
+          window.location.href =
+            "/login";
+
+          return;
+        }
+
+        throw new Error(
+          "Failed to download report"
+        );
+      }
+
+      // Get PDF as Blob
+      const blob =
+        await response.blob();
+
+      // Create temporary URL
+      const url =
+        window.URL.createObjectURL(
+          blob
+        );
+
+      // Create temporary link
+      const link =
+        document.createElement("a");
+
+      link.href = url;
+
+      link.download =
+        `${reportName.replace(
+          /\s+/g,
+          "_"
+        )}.pdf`;
+
+      document.body.appendChild(
+        link
+      );
+
+      link.click();
+
+      // Cleanup
+      link.remove();
+
+      window.URL.revokeObjectURL(
+        url
+      );
+
+      // Refresh download count
+      await fetchReports();
+
+    } catch (err) {
+
+      console.error(
+        "Download error:",
+        err
+      );
+
+      setError(
+        "Unable to download report."
+      );
+
+    }
+  };
+
+
+  // ================= DELETE REPORT =================
+
+  const handleDeleteReport = async (reportId) => {
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this report?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+
+      setError("");
+
+      const token =
+        localStorage.getItem(
+          "access_token"
+        );
+
+      if (!token) {
+
+        window.location.href = "/login";
+        return;
+
+      }
+
+      const response = await fetch(
+        `http://127.0.0.1:8000/reports/${reportId}`,
+        {
+          method: "DELETE",
+
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+
+        if (response.status === 401) {
+
+          localStorage.removeItem(
+            "access_token"
+          );
+
+          localStorage.removeItem(
+            "user"
+          );
+
+          window.location.href =
+            "/login";
+
+          return;
+        }
+
+        throw new Error(
+          "Failed to delete report"
+        );
+      }
+
+      // Refresh reports after deletion
+      await fetchReports();
+
+    } catch (err) {
+
+      console.error(
+        "Delete report error:",
+        err
+      );
+
+      setError(
+        "Unable to delete report."
+      );
+
+    }
+  };
+
+
+  // ================= STATISTICS =================
+
+  const totalReports =
+    reports.length;
+
+  const completedReports =
+    reports.filter(
+      (report) =>
+        report.status ===
+        "completed"
+    ).length;
+
+  const pendingReports =
+    reports.filter(
+      (report) =>
+        report.status !==
+        "completed"
+    ).length;
+
+  const totalDownloads =
+    reports.reduce(
+      (sum, report) =>
+        sum +
+        Number(
+          report.downloads || 0
+        ),
+      0
+    );
+
+
+  const completionRate =
+    totalReports > 0
+      ? (
+          (completedReports /
+            totalReports) *
+          100
+        ).toFixed(1)
+      : "0.0";
+
+
+  // ================= DATE + TIME FORMAT =================
+  const formatDateTime = (date) => {
+
+  if (!date) return "-";
+
+  let dateString = String(date);
+
+  // Old database records may not contain timezone information.
+  // Treat them as UTC.
+  if (
+    !dateString.endsWith("Z") &&
+    !/[+-]\d{2}:\d{2}$/.test(dateString)
+  ) {
+    dateString += "Z";
+  }
+
+  const d = new Date(dateString);
+
+  if (isNaN(d.getTime())) {
+    return "-";
+  }
+
+  return d.toLocaleString(
+    "en-IN",
+    {
+      timeZone: "Asia/Kolkata",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }
+  );
+  };
+
+
   return (
     <div className="dashboard4-page">
 
-      {/* SIDEBAR */}
+      {/* ================= SIDEBAR ================= */}
+
       <aside className="dashboard4-sidebar">
 
         <div className="dashboard4-logo">
-          <div className="dashboard4-logo-icon">P</div>
+
+          <div className="dashboard4-logo-icon">
+            P
+          </div>
 
           <div>
-            <h2>PredictOpsAI</h2>
-            <span>AI Operations</span>
+
+            <h2>
+              PredictOpsAI
+            </h2>
+
+            <span>
+              AI Operations
+            </span>
+
           </div>
+
         </div>
+
 
         <nav className="dashboard4-nav">
 
-          <Link to="/dashboard1" className="dashboard4-nav-item">
+          <Link
+            to="/dashboard1"
+            className="dashboard4-nav-item"
+          >
             <span>⌂</span>
             Overview
           </Link>
 
-          <Link to="/dashboard2" className="dashboard4-nav-item">
+
+          <Link
+            to="/dashboard2"
+            className="dashboard4-nav-item"
+          >
             <span>▣</span>
             Analytics
           </Link>
 
-          <Link to="/dashboard3" className="dashboard4-nav-item">
+
+          <Link
+            to="/dashboard3"
+            className="dashboard4-nav-item"
+          >
             <span>✦</span>
             Predictions
           </Link>
 
-          <Link to="/dashboard4" className="dashboard4-nav-item active">
+
+          <Link
+            to="/dashboard4"
+            className="dashboard4-nav-item active"
+          >
             <span>▤</span>
             Reports
           </Link>
 
         </nav>
 
+
         <div className="dashboard4-sidebar-bottom">
 
-          <Link to="/login" className="dashboard4-logout">
+          <button
+            onClick={handleLogout}
+            className="dashboard4-logout"
+          >
             <span>↪</span>
             Logout
-          </Link>
+          </button>
 
         </div>
 
       </aside>
 
 
-      {/* MAIN CONTENT */}
+      {/* ================= MAIN ================= */}
+
       <main className="dashboard4-main">
 
-        {/* TOPBAR */}
+
+        {/* ================= TOPBAR ================= */}
+
         <header className="dashboard4-topbar">
 
           <div>
-            <h1>Reports</h1>
-            <p>View and manage your PredictOpsAI reports</p>
+
+            <h1>
+              Reports
+            </h1>
+
+            <p>
+              View and manage your
+              PredictOpsAI reports
+            </p>
+
           </div>
+
 
           <div className="dashboard4-profile">
 
@@ -71,12 +568,40 @@ function Dashboard4() {
             </button>
 
             <div className="dashboard4-avatar">
-              H
+
+              {JSON.parse(
+                localStorage.getItem(
+                  "user"
+                ) || "{}"
+              )?.name
+                ?.charAt(0)
+                ?.toUpperCase() || "U"}
+
             </div>
 
+
             <div className="dashboard4-profile-info">
-              <strong>Harshit Kumar</strong>
-              <span>Administrator</span>
+
+              <strong>
+
+                {JSON.parse(
+                  localStorage.getItem(
+                    "user"
+                  ) || "{}"
+                )?.name || "User"}
+
+              </strong>
+
+              <span>
+
+                {JSON.parse(
+                  localStorage.getItem(
+                    "user"
+                  ) || "{}"
+                )?.email || ""}
+
+              </span>
+
             </div>
 
           </div>
@@ -84,200 +609,361 @@ function Dashboard4() {
         </header>
 
 
-        {/* REPORT SUMMARY */}
+        {/* ================= ERROR ================= */}
+
+        {error && (
+
+          <div className="dashboard-error">
+            {error}
+          </div>
+
+        )}
+
+
+        {/* ================= SUMMARY ================= */}
+
         <section className="reports4-summary">
 
-          <div className="report4-stat">
-            <div className="report4-icon">▤</div>
 
-            <div>
-              <span>Total Reports</span>
-              <h2>248</h2>
-              <small>+12 this month</small>
+          {/* TOTAL */}
+
+          <div className="report4-stat">
+
+            <div className="report4-icon">
+              ▤
             </div>
-          </div>
-
-
-          <div className="report4-stat">
-            <div className="report4-icon">✓</div>
 
             <div>
-              <span>Completed</span>
-              <h2>231</h2>
-              <small className="report4-positive">
-                93.1% completed
+
+              <span>
+                Total Reports
+              </span>
+
+              <h2>
+                {loading
+                  ? "..."
+                  : totalReports}
+              </h2>
+
+              <small>
+                Generated reports
               </small>
+
             </div>
+
           </div>
 
 
-          <div className="report4-stat">
-            <div className="report4-icon">◷</div>
+          {/* COMPLETED */}
 
-            <div>
-              <span>Pending</span>
-              <h2>17</h2>
-              <small>Needs attention</small>
+          <div className="report4-stat">
+
+            <div className="report4-icon">
+              ✓
             </div>
-          </div>
-
-
-          <div className="report4-stat">
-            <div className="report4-icon">↓</div>
 
             <div>
-              <span>Downloads</span>
-              <h2>1,842</h2>
+
+              <span>
+                Completed
+              </span>
+
+              <h2>
+                {loading
+                  ? "..."
+                  : completedReports}
+              </h2>
+
               <small className="report4-positive">
-                +24.6% this month
+                {completionRate}%
+                completed
               </small>
+
             </div>
+
+          </div>
+
+
+          {/* PENDING */}
+
+          <div className="report4-stat">
+
+            <div className="report4-icon">
+              ◷
+            </div>
+
+            <div>
+
+              <span>
+                Pending
+              </span>
+
+              <h2>
+                {loading
+                  ? "..."
+                  : pendingReports}
+              </h2>
+
+              <small>
+                Needs attention
+              </small>
+
+            </div>
+
+          </div>
+
+
+          {/* DOWNLOADS */}
+
+          <div className="report4-stat">
+
+            <div className="report4-icon">
+              ↓
+            </div>
+
+            <div>
+
+              <span>
+                Downloads
+              </span>
+
+              <h2>
+                {loading
+                  ? "..."
+                  : totalDownloads}
+              </h2>
+
+              <small className="report4-positive">
+                Total downloads
+              </small>
+
+            </div>
+
           </div>
 
         </section>
 
 
-        {/* REPORT PANEL */}
+        {/* ================= REPORT PANEL ================= */}
+
         <section className="reports4-panel">
+
 
           <div className="reports4-panel-header">
 
             <div>
-              <h2>Recent Reports</h2>
-              <p>Your latest generated AI reports</p>
+
+              <h2>
+                Recent Reports
+              </h2>
+
+              <p>
+                Your latest generated AI
+                reports
+              </p>
+
             </div>
 
-            <button className="generate4-button">
-              + Generate Report
+
+            <button
+              className="generate4-button"
+              onClick={
+                handleGenerateReport
+              }
+              disabled={generating}
+            >
+
+              {generating
+                ? "Generating..."
+                : "+ Generate Report"}
+
             </button>
 
           </div>
 
 
-          {/* TABLE */}
+          {/* ================= TABLE ================= */}
+
           <div className="reports4-table">
+
 
             <div className="report4-row report4-heading">
 
-              <span>Report Name</span>
-              <span>Type</span>
-              <span>Date</span>
-              <span>Status</span>
-              <span>Action</span>
-
-            </div>
-
-
-            <div className="report4-row">
-
-              <div className="report4-name">
-                <div className="report4-file-icon">PDF</div>
-
-                <div>
-                  <strong>Monthly Performance</strong>
-                  <small>AI Analytics Report</small>
-                </div>
-              </div>
-
-              <span>Analytics</span>
-
-              <span>26 Aug 2026</span>
-
-              <span className="report4-status completed">
-                Completed
+              <span>
+                Report Name
               </span>
 
-              <button className="download4-button">
-                ↓ Download
-              </button>
-
-            </div>
-
-
-            <div className="report4-row">
-
-              <div className="report4-name">
-                <div className="report4-file-icon">PDF</div>
-
-                <div>
-                  <strong>Prediction Analysis</strong>
-                  <small>AI Prediction Report</small>
-                </div>
-              </div>
-
-              <span>Prediction</span>
-
-              <span>25 Aug 2026</span>
-
-              <span className="report4-status completed">
-                Completed
+              <span>
+                Type
               </span>
 
-              <button className="download4-button">
-                ↓ Download
-              </button>
-
-            </div>
-
-
-            <div className="report4-row">
-
-              <div className="report4-name">
-                <div className="report4-file-icon">PDF</div>
-
-                <div>
-                  <strong>System Performance</strong>
-                  <small>System Health Report</small>
-                </div>
-              </div>
-
-              <span>System</span>
-
-              <span>24 Aug 2026</span>
-
-              <span className="report4-status completed">
-                Completed
+              <span>
+                Date & Time
               </span>
 
-              <button className="download4-button">
-                ↓ Download
-              </button>
-
-            </div>
-
-
-            <div className="report4-row">
-
-              <div className="report4-name">
-                <div className="report4-file-icon">PDF</div>
-
-                <div>
-                  <strong>AI Model Evaluation</strong>
-                  <small>Model Performance Report</small>
-                </div>
-              </div>
-
-              <span>AI Model</span>
-
-              <span>23 Aug 2026</span>
-
-              <span className="report4-status pending">
-                Processing
+              <span>
+                Status
               </span>
 
-              <button className="download4-button disabled">
-                Processing
-              </button>
+              <span>
+                Action
+              </span>
 
             </div>
+
+
+            {/* LOADING */}
+
+            {loading && (
+
+              <div className="report4-row">
+
+                <span>
+                  Loading reports...
+                </span>
+
+              </div>
+
+            )}
+
+
+            {/* REPORTS */}
+
+            {!loading &&
+              reports.map(
+                (report) => (
+
+                  <div
+                    className="report4-row"
+                    key={report.id}
+                  >
+
+
+                    <div className="report4-name">
+
+                      <div className="report4-file-icon">
+                        PDF
+                      </div>
+
+
+                      <div>
+
+                        <strong>
+                          {report.report_name}
+                        </strong>
+
+                        <small>
+                          {report.description}
+                        </small>
+
+                      </div>
+
+                    </div>
+
+
+                    <span>
+                      {report.report_type}
+                    </span>
+
+
+                    <span>
+                      {formatDateTime(
+                        report.created_at
+                      )}
+                    </span>
+
+
+                    <span
+                      className={`report4-status ${
+                        report.status ===
+                        "completed"
+                          ? "completed"
+                          : "pending"
+                      }`}
+                    >
+
+                      {report.status ===
+                      "completed"
+                        ? "Completed"
+                        : "Processing"}
+
+                    </span>
+
+
+                    {/* ================= ACTIONS ================= */}
+
+                    <div className="report4-actions">
+
+                      {report.status ===
+                      "completed" ? (
+
+                        <button
+                          className="download4-button"
+                          onClick={() =>
+                            handleDownload(
+                              report.id,
+                              report.report_name
+                            )
+                          }
+                        >
+                          ↓ Download
+                        </button>
+
+                      ) : (
+
+                        <button
+                          className="download4-button disabled"
+                          disabled
+                        >
+                          Processing
+                        </button>
+
+                      )}
+
+
+                      <button
+                        className="delete4-button"
+                        onClick={() =>
+                          handleDeleteReport(
+                            report.id
+                          )
+                        }
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                )
+              )}
+
+
+            {/* EMPTY */}
+
+            {!loading &&
+              reports.length === 0 && (
+
+                <div className="report4-row">
+
+                  <span>
+                    No reports found.
+                  </span>
+
+                </div>
+
+              )}
 
           </div>
 
         </section>
 
 
-        {/* REPORT INSIGHTS */}
+        {/* ================= INSIGHTS ================= */}
+
         <section className="reports4-bottom">
+
 
           <div className="reports4-insight">
 
@@ -286,12 +972,23 @@ function Dashboard4() {
             </div>
 
             <div>
-              <h3>AI Report Insights</h3>
+
+              <h3>
+                AI Report Insights
+              </h3>
 
               <p>
-                Your system generated 18% more reports this
-                month compared to the previous month.
+
+                {totalReports > 0
+                  ? `Your system has generated ${totalReports} report${
+                      totalReports !== 1
+                        ? "s"
+                        : ""
+                    } so far.`
+                  : "Generate your first report to see AI insights."}
+
               </p>
+
             </div>
 
           </div>
@@ -304,12 +1001,17 @@ function Dashboard4() {
             </div>
 
             <div>
-              <h3>System Status</h3>
+
+              <h3>
+                System Status
+              </h3>
 
               <p>
-                All reporting services are running normally
-                and ready to generate new reports.
+                Reporting services are
+                running normally and ready
+                to generate new reports.
               </p>
+
             </div>
 
           </div>
@@ -317,16 +1019,24 @@ function Dashboard4() {
         </section>
 
 
-        {/* NAVIGATION */}
+        {/* ================= NAVIGATION ================= */}
+
         <div className="dashboard4-navigation">
 
-          <Link to="/dashboard3" className="dashboard4-button">
+          <Link
+            to="/dashboard3"
+            className="dashboard4-button"
+          >
             ← Dashboard 3
           </Link>
 
-          <Link to="/login" className="dashboard4-button logout4-button">
+
+          <button
+            onClick={handleLogout}
+            className="dashboard4-button logout4-button"
+          >
             Logout
-          </Link>
+          </button>
 
         </div>
 
@@ -337,3 +1047,4 @@ function Dashboard4() {
 }
 
 export default Dashboard4;
+

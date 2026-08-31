@@ -1,19 +1,90 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./Dashboard.css";
 
 function Dashboard1() {
+  const [user, setUser] = useState(null);
+  const [predictions, setPredictions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // Get logged-in user from localStorage
-  let user = null;
+  // ================= USER =================
 
-  try {
-    user = JSON.parse(localStorage.getItem("user"));
-  } catch (error) {
-    console.error("Invalid user data in localStorage");
-    localStorage.removeItem("user");
-  }
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem("user");
 
-  // Logout function
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (err) {
+      console.error("Invalid user data");
+      localStorage.removeItem("user");
+    }
+  }, []);
+
+  // ================= FETCH PREDICTIONS =================
+
+  useEffect(() => {
+    const fetchPredictions = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const token = localStorage.getItem("access_token");
+
+        if (!token) {
+          window.location.href = "/login";
+          return;
+        }
+
+        const response = await fetch(
+          "http://127.0.0.1:8000/predictions/",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("user");
+            window.location.href = "/login";
+            return;
+          }
+
+          throw new Error("Failed to fetch predictions");
+        }
+
+        const data = await response.json();
+
+        // ================= SORT LATEST FIRST =================
+        const sortedPredictions = Array.isArray(data)
+          ? [...data].sort((a, b) => {
+              if (!a.id || !b.id) return 0;
+
+              return b.id.localeCompare(a.id);
+            })
+          : [];
+
+        setPredictions(sortedPredictions);
+      } catch (err) {
+        console.error("Prediction fetch error:", err);
+        setError("Unable to load prediction data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPredictions();
+  }, []);
+
+  // ================= LOGOUT =================
+
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user");
@@ -21,6 +92,61 @@ function Dashboard1() {
     window.location.href = "/login";
   };
 
+  // ================= CALCULATIONS =================
+
+  const totalPredictions = predictions.length;
+
+  const successfulPredictions = predictions.filter(
+    (prediction) =>
+      prediction.predicted_status === "low_risk"
+  ).length;
+
+  const successRate =
+    totalPredictions > 0
+      ? (
+          (successfulPredictions / totalPredictions) *
+          100
+        ).toFixed(1)
+      : "0.0";
+
+  const averageResponse =
+    totalPredictions > 0
+      ? Math.round(
+          predictions.reduce(
+            (sum, prediction) =>
+              sum +
+              Number(prediction.response_time || 0),
+            0
+          ) / totalPredictions
+        )
+      : 0;
+
+  // ================= LATEST PREDICTION =================
+
+  const latestPrediction =
+    predictions.length > 0
+      ? predictions[0]
+      : null;
+
+  const latestFailureProbability =
+    latestPrediction
+      ? Math.round(
+          Number(
+            latestPrediction.failure_probability || 0
+          ) * 100
+        )
+      : 0;
+
+  const latestRisk =
+    latestPrediction?.risk_level || "low";
+
+  const isCritical =
+    latestRisk === "critical" ||
+    latestRisk === "high";
+
+  // ================= CHART DATA =================
+
+  const chartPredictions = predictions.slice(0, 7);
 
   return (
     <div className="dashboard-page">
@@ -29,7 +155,6 @@ function Dashboard1() {
 
       <aside className="dashboard-sidebar">
 
-        {/* Logo */}
         <div className="dashboard-logo">
 
           <div className="logo-icon">
@@ -43,8 +168,6 @@ function Dashboard1() {
 
         </div>
 
-
-        {/* Navigation */}
         <nav className="dashboard-nav">
 
           <Link
@@ -81,8 +204,6 @@ function Dashboard1() {
 
         </nav>
 
-
-        {/* Logout */}
         <div className="sidebar-bottom">
 
           <button
@@ -97,11 +218,9 @@ function Dashboard1() {
 
       </aside>
 
-
-      {/* ================= MAIN CONTENT ================= */}
+      {/* ================= MAIN ================= */}
 
       <main className="dashboard-main">
-
 
         {/* ================= TOP BAR ================= */}
 
@@ -119,30 +238,21 @@ function Dashboard1() {
 
           </div>
 
-
           <div className="topbar-right">
 
             <button className="notification-button">
               🔔
             </button>
 
-
-            {/* ================= USER PROFILE ================= */}
-
             <div className="profile">
 
-              {/* User Avatar */}
-
               <div className="profile-avatar">
-
                 {user?.name
-                  ? user.name.charAt(0).toUpperCase()
+                  ? user.name
+                      .charAt(0)
+                      .toUpperCase()
                   : "U"}
-
               </div>
-
-
-              {/* User Information */}
 
               <div className="profile-info">
 
@@ -162,13 +272,27 @@ function Dashboard1() {
 
         </header>
 
+        {/* ================= LOADING ================= */}
+
+        {loading && (
+          <div className="dashboard-loading">
+            Loading dashboard data...
+          </div>
+        )}
+
+        {/* ================= ERROR ================= */}
+
+        {error && (
+          <div className="dashboard-error">
+            {error}
+          </div>
+        )}
 
         {/* ================= STATISTICS ================= */}
 
         <section className="stats-grid">
 
-
-          {/* Card 1 */}
+          {/* TOTAL OPERATIONS */}
 
           <div className="stat-card">
 
@@ -183,19 +307,20 @@ function Dashboard1() {
               </span>
 
               <h2>
-                12,458
+                {loading
+                  ? "..."
+                  : totalPredictions}
               </h2>
 
               <small className="positive">
-                +12.5%
+                Live
               </small>
 
             </div>
 
           </div>
 
-
-          {/* Card 2 */}
+          {/* PREDICTIONS */}
 
           <div className="stat-card">
 
@@ -210,19 +335,20 @@ function Dashboard1() {
               </span>
 
               <h2>
-                8,294
+                {loading
+                  ? "..."
+                  : totalPredictions}
               </h2>
 
               <small className="positive">
-                +18.2%
+                AI Generated
               </small>
 
             </div>
 
           </div>
 
-
-          {/* Card 3 */}
+          {/* SUCCESS RATE */}
 
           <div className="stat-card">
 
@@ -237,19 +363,20 @@ function Dashboard1() {
               </span>
 
               <h2>
-                96.8%
+                {loading
+                  ? "..."
+                  : `${successRate}%`}
               </h2>
 
               <small className="positive">
-                +2.4%
+                Based on predictions
               </small>
 
             </div>
 
           </div>
 
-
-          {/* Card 4 */}
+          {/* AVG RESPONSE */}
 
           <div className="stat-card">
 
@@ -264,11 +391,13 @@ function Dashboard1() {
               </span>
 
               <h2>
-                124ms
+                {loading
+                  ? "..."
+                  : `${averageResponse}ms`}
               </h2>
 
               <small className="positive">
-                -8.6%
+                Live Metrics
               </small>
 
             </div>
@@ -277,13 +406,11 @@ function Dashboard1() {
 
         </section>
 
-
         {/* ================= CHART + AI ================= */}
 
         <section className="dashboard-grid">
 
-
-          {/* Operations Chart */}
+          {/* ================= OPERATIONS ================= */}
 
           <div className="dashboard-panel">
 
@@ -296,13 +423,16 @@ function Dashboard1() {
                 </h2>
 
                 <p>
-                  System activity during the week
+                  Recent prediction activity
                 </p>
 
               </div>
 
-
               <select>
+
+                <option>
+                  Latest
+                </option>
 
                 <option>
                   Last 7 Days
@@ -312,16 +442,9 @@ function Dashboard1() {
                   Last 30 Days
                 </option>
 
-                <option>
-                  Last 90 Days
-                </option>
-
               </select>
 
             </div>
-
-
-            {/* Chart */}
 
             <div className="chart-area">
 
@@ -335,29 +458,62 @@ function Dashboard1() {
 
               </div>
 
-
               <div className="chart">
 
-                <div className="chart-bar bar-1"></div>
-                <div className="chart-bar bar-2"></div>
-                <div className="chart-bar bar-3"></div>
-                <div className="chart-bar bar-4"></div>
-                <div className="chart-bar bar-5"></div>
-                <div className="chart-bar bar-6"></div>
-                <div className="chart-bar bar-7"></div>
+                {chartPredictions.length > 0 ? (
+
+                  chartPredictions.map(
+                    (prediction, index) => {
+
+                      const probability =
+                        Number(
+                          prediction.failure_probability ||
+                            0
+                        ) * 100;
+
+                      return (
+                        <div
+                          key={
+                            prediction.id || index
+                          }
+                          className="chart-bar"
+                          style={{
+                            height: `${Math.max(
+                              probability,
+                              5
+                            )}%`,
+                          }}
+                          title={`${Math.round(
+                            probability
+                          )}% failure risk`}
+                        ></div>
+                      );
+                    }
+                  )
+
+                ) : (
+
+                  !loading && (
+                    <p>
+                      No prediction data available.
+                    </p>
+                  )
+
+                )}
 
               </div>
 
+              {/* DYNAMIC LABELS */}
 
               <div className="chart-labels">
 
-                <span>Mon</span>
-                <span>Tue</span>
-                <span>Wed</span>
-                <span>Thu</span>
-                <span>Fri</span>
-                <span>Sat</span>
-                <span>Sun</span>
+                {chartPredictions.map(
+                  (_, index) => (
+                    <span key={index}>
+                      {index + 1}
+                    </span>
+                  )
+                )}
 
               </div>
 
@@ -365,8 +521,7 @@ function Dashboard1() {
 
           </div>
 
-
-          {/* AI Prediction */}
+          {/* ================= AI PREDICTION ================= */}
 
           <div className="dashboard-panel prediction-panel">
 
@@ -379,7 +534,7 @@ function Dashboard1() {
                 </h2>
 
                 <p>
-                  System prediction status
+                  Latest system prediction
                 </p>
 
               </div>
@@ -390,33 +545,46 @@ function Dashboard1() {
 
             </div>
 
-
             <div className="prediction-score">
 
               <div className="score-circle">
 
                 <strong>
-                  94%
+                  {loading
+                    ? "..."
+                    : `${latestFailureProbability}%`}
                 </strong>
 
                 <span>
-                  Confidence
+                  Failure Risk
                 </span>
 
               </div>
 
             </div>
 
-
             <div className="prediction-message">
 
               <strong>
-                System Stable
+
+                {loading
+                  ? "Loading..."
+                  : latestPrediction
+                  ? isCritical
+                    ? "⚠️ High Risk Detected"
+                    : "✅ System Stable"
+                  : "No Prediction"}
+
               </strong>
 
               <p>
-                AI models predict normal system
-                performance for the next 24 hours.
+
+                {loading
+                  ? "Fetching latest AI prediction..."
+                  : latestPrediction
+                  ? latestPrediction.explanation
+                  : "No prediction data available."}
+
               </p>
 
             </div>
@@ -425,13 +593,11 @@ function Dashboard1() {
 
         </section>
 
-
         {/* ================= ACTIVITY + STATUS ================= */}
 
         <section className="dashboard-grid bottom-grid">
 
-
-          {/* Recent Activity */}
+          {/* ================= RECENT ACTIVITY ================= */}
 
           <div className="dashboard-panel">
 
@@ -444,102 +610,101 @@ function Dashboard1() {
                 </h2>
 
                 <p>
-                  Latest system events
+                  Latest AI predictions
                 </p>
 
               </div>
 
-              <button className="view-button">
+              <Link
+                to="/dashboard3"
+                className="view-button"
+              >
                 View All
-              </button>
+              </Link>
 
             </div>
 
-
             <div className="activity-list">
 
+              {predictions
+                .slice(0, 3)
+                .map(
+                  (prediction, index) => {
 
-              <div className="activity-item">
+                    const warning =
+                      prediction.risk_level ===
+                        "critical" ||
+                      prediction.risk_level ===
+                        "high";
 
-                <div className="activity-icon success">
-                  ✓
-                </div>
+                    return (
 
-                <div>
+                      <div
+                        className="activity-item"
+                        key={
+                          prediction.id || index
+                        }
+                      >
 
-                  <strong>
-                    Prediction completed
-                  </strong>
+                        <div
+                          className={`activity-icon ${
+                            warning
+                              ? "warning"
+                              : "success"
+                          }`}
+                        >
 
-                  <span>
-                    AI model completed successfully
-                  </span>
+                          {warning
+                            ? "!"
+                            : "✓"}
 
-                </div>
+                        </div>
 
-                <small>
-                  2 min ago
-                </small>
+                        <div>
 
-              </div>
+                          <strong>
+                            {
+                              prediction.predicted_status
+                            }
+                          </strong>
 
+                          <span>
+                            {
+                              prediction.service
+                            }{" "}
+                            —{" "}
+                            {
+                              prediction.risk_level
+                            }{" "}
+                            risk
+                          </span>
 
-              <div className="activity-item">
+                        </div>
 
-                <div className="activity-icon success">
-                  ✓
-                </div>
+                        <small>
+                          AI
+                        </small>
 
-                <div>
+                      </div>
 
-                  <strong>
-                    System health check
-                  </strong>
+                    );
+                  }
+                )}
 
-                  <span>
-                    All services are running normally
-                  </span>
+              {!loading &&
+                predictions.length === 0 && (
 
-                </div>
+                  <p>
+                    No recent predictions found.
+                  </p>
 
-                <small>
-                  15 min ago
-                </small>
-
-              </div>
-
-
-              <div className="activity-item">
-
-                <div className="activity-icon warning">
-                  !
-                </div>
-
-                <div>
-
-                  <strong>
-                    High CPU usage
-                  </strong>
-
-                  <span>
-                    CPU usage reached 78%
-                  </span>
-
-                </div>
-
-                <small>
-                  32 min ago
-                </small>
-
-              </div>
-
+                )}
 
             </div>
 
           </div>
 
-
-          {/* System Status */}
+          {/* ================= SYSTEM STATUS ================= */}
 
           <div className="dashboard-panel">
 
@@ -559,9 +724,7 @@ function Dashboard1() {
 
             </div>
 
-
             <div className="system-status">
-
 
               <div className="status-row">
 
@@ -575,7 +738,6 @@ function Dashboard1() {
 
               </div>
 
-
               <div className="status-row">
 
                 <span>
@@ -587,7 +749,6 @@ function Dashboard1() {
                 </strong>
 
               </div>
-
 
               <div className="status-row">
 
@@ -601,19 +762,17 @@ function Dashboard1() {
 
               </div>
 
-
               <div className="status-row">
 
                 <span>
-                  Cloud Storage
+                  Monitoring
                 </span>
 
                 <strong className="online">
-                  ● Online
+                  ● Active
                 </strong>
 
               </div>
-
 
             </div>
 
@@ -621,8 +780,7 @@ function Dashboard1() {
 
         </section>
 
-
-        {/* ================= NEXT DASHBOARD ================= */}
+        {/* ================= NEXT ================= */}
 
         <div className="dashboard-navigation">
 
@@ -634,7 +792,6 @@ function Dashboard1() {
           </Link>
 
         </div>
-
 
       </main>
 

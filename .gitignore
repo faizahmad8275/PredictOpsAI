@@ -17,3 +17,6 @@ Backend/.venv/
 # OS
 .DS_Store
 Thumbs.db
+# Generated reports
+Backend/generated_reports/
+Backend/Backend/generated_reports/
